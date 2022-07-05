@@ -50,9 +50,9 @@
             if (response.status > 200) {
               throw response.statusText;
             }
-            result.innerText = "Success! Subscriptions added to your new account.";
+            subResult.innerText = "Success! Subscriptions added to your new account.";
           } catch(err) {
-            result.innerText = `Error: ${err}`;
+            subResult.innerText = `Error: ${err}`;
           }
         });
 
@@ -67,9 +67,9 @@
             if (response.status > 200) {
               throw response.statusText;
             }
-            result.innerText = "Success! Preferences migrated to your new account.";
+            prefsResult.innerText = "Success! Preferences migrated to your new account.";
           } catch(err) {
-            result.innerText = `Error: ${err}`;
+            prefsResult.innerText = `Error: ${err}`;
           }
         });
       });
