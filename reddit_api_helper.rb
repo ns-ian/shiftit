@@ -3,7 +3,7 @@
 require 'base64'
 require 'json'
 require 'net/http'
-require 'pry-byebug'
+
 require_relative 'constants'
 
 class RedditApiHelper
