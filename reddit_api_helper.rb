@@ -6,6 +6,7 @@ require 'net/http'
 
 require_relative 'constants'
 
+# Middleware for making Reddit authorization more automatic
 class RedditApiHelper
   attr_reader :app, :reddit
   attr_accessor :token
@@ -22,9 +23,7 @@ class RedditApiHelper
     code = request.GET['code']
     state = request.GET['state']
 
-    if code && state && state == session['state']
-      session['token'] = request_token(code)
-    end
+    session['token'] = request_token(code) if code && state && state == session['state']
     app.call env
   end
 

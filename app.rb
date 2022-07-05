@@ -21,7 +21,7 @@ get '/' do
     end
   end
 
-  @state = 'first_' + SecureRandom.hex(10)
+  @state = "first_#{SecureRandom.hex(10)}"
   session['state'] = @state
   erb :index
 end
@@ -29,7 +29,7 @@ end
 get '/1' do
   @subscriptions = JSON.generate(list_subs)
   @preferences = JSON.generate(fetch_prefs)
-  @state = 'second_' + SecureRandom.hex(10)
+  @state = "second_#{SecureRandom.hex(10)}"
   session['state'] = @state
   erb :a
 end
@@ -68,11 +68,7 @@ def get_subs(after = nil, count = nil)
   JSON.parse(response.body)
 end
 
-def list_subs
-  sub_list = []
-  count = 0
-  subs = {}
-
+def list_subs(sub_list = [], count = 0, subs = {})
   loop do
     subs = get_subs(subs.dig('data', 'after'), count)
     subs.dig('data', 'children').each do |sub|
@@ -101,7 +97,7 @@ end
 def update_prefs!(prefs)
   header = {
     'Authorization' => "bearer #{session['token']}",
-    'Content-Type' => 'application/json',
+    'Content-Type' => 'application/json'
   }
   request_path = '/api/v1/me/prefs'
   response = reddit_oauth.patch(request_path, prefs, header.merge(USER_AGENT))
