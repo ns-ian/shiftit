@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
+require 'sinatra'
 require 'dotenv/load' if development?
 
 require 'json'
 require 'net/http'
 require 'securerandom'
-require 'sinatra'
-require 'pry-byebug'
+
 require_relative 'constants'
 
 get '/' do
