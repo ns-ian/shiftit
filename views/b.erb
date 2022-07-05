@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>shiftit - Migrate your Reddit subscriptions</title>
+    <link rel="stylesheet" href="stylesheets/milligram.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script>
+      subs = sessionStorage.getItem("subscriptions");
+      prefs = sessionStorage.getItem("preferences");
+
+      document.addEventListener("DOMContentLoaded", function() {
+        const subsList = document.getElementById("subs");
+        subsArr = subs.split(",");
+        subsFormatted = "";
+        subsArr.forEach(sub => {
+          if (sub === subsArr.slice(-1)[0]) {
+            subsFormatted += sub;
+          } else {
+            subsFormatted += sub + ", ";
+          }
+        });
+        subsList.innerText = subsFormatted;
+
+        const prefsObj = JSON.parse(prefs);
+        const prefsTbody = document.getElementById("tbody");
+        Object.keys(prefsObj).forEach(pref => {
+          const tr = document.createElement("tr");
+          const setting = document.createElement("td");
+          const value = document.createElement("td");
+          setting.innerText = pref;
+          value.innerText = prefsObj[pref];
+          tr.appendChild(setting);
+          tr.appendChild(value);
+          prefsTbody.appendChild(tr);
+        });
+
+        const subBtn = document.getElementById("sub-btn");
+        const prefsBtn = document.getElementById("prefs-btn");
+        const subResult = document.getElementById("sub-result");
+        const prefsResult = document.getElementById("prefs-result");
+
+        subBtn.addEventListener("click", async _ => {
+          try {
+            const response = await fetch(
+              "/2",
+              {
+                method: "post",
+                body: JSON.stringify({ subscriptions: subs })
+              });
+            if (response.status > 200) {
+              throw response.statusText;
+            }
+            result.innerText = "Success! Subscriptions added to your new account.";
+          } catch(err) {
+            result.innerText = `Error: ${err}`;
+          }
+        });
+
+        prefsBtn.addEventListener("click", async _ => {
+          try {
+            const response = await fetch(
+              "/2",
+              {
+                method: "post",
+                body: JSON.stringify({ preferences: prefs })
+              });
+            if (response.status > 200) {
+              throw response.statusText;
+            }
+            result.innerText = "Success! Preferences migrated to your new account.";
+          } catch(err) {
+            result.innerText = `Error: ${err}`;
+          }
+        });
+      });
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="column">
+          <h1>shiftit <span>v0.1.0</span></h1>
+          <p><strong>Below are the subreddits from your original account. Please review them, and click 'Subscribe to all' to migrate the subscriptions to your new account.</strong></p>
+          <p id="subs"></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <button id="sub-btn">Subscribe to All</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <p id="sub-result"></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <p><strong>Below are the settings associated with your original account. You may migrate them to your new account with the button below.</strong></p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <table>
+            <thead>
+              <tr>
+                <th>Setting</th>
+                <th>Value</th>
+              </tr>
+            </thead>
+            <tbody id="tbody">
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <button id="prefs-btn">Migrate my preferences</button>
+        </div>
+      </div>
+      <div class="row">
+        <div class="column">
+          <p id="prefs-result"></p>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

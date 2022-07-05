@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>shiftit - Migrate your Reddit subscriptions and preferences</title>
+    <link rel="stylesheet" href="stylesheets/milligram.min.css">
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script>
+      sessionStorage.setItem("subscriptions", <%= @subscriptions %>);
+      sessionStorage.setItem("preferences", JSON.stringify(<%= @preferences %>));
+    </script>
+  </head>
+  <body>
+    <div class="container">
+      <div class="row">
+        <div class="column">
+          <h1>shiftit <span>v0.1.0</span></h1>
+          <p>The subscriptions and preferences from your original account have been successfully retrieved and saved. Please <strong>log into your other account</strong> and then click the link below. This will allow shiftit to update your subscriptions and preferences.</p>
+          <button onclick="window.location.href='https://www.reddit.com/api/v1/authorize?client_id=tVDY-xn8K6vWlnlKC5oJtg&response_type=code&state=<%= @state %>&redirect_uri=http://localhost:9292/&duration=temporary&scope=account,subscribe';">authorize this app for your second account</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
