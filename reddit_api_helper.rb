@@ -24,6 +24,7 @@ class RedditApiHelper
     state = request.GET['state']
 
     session['token'] = request_token(code) if code && state && state == session['state']
+    puts "Session token: #{session['token']}"
     app.call env
   end
 

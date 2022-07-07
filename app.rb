@@ -21,12 +21,16 @@ get '/' do
     end
   end
 
+  @client_id = ENV['CLIENT_ID']
+  @redirect_uri = ENV['REDIRECT_URI']
   @state = "first_#{SecureRandom.hex(10)}"
   session['state'] = @state
   erb :index
 end
 
 get '/1' do
+  @client_id = ENV['CLIENT_ID']
+  @redirect_uri = ENV['REDIRECT_URI']
   @subscriptions = JSON.generate(list_subs)
   @preferences = JSON.generate(fetch_prefs)
   @state = "second_#{SecureRandom.hex(10)}"
@@ -87,10 +91,12 @@ def fetch_prefs
 end
 
 def subscribe_all!(subs)
+  logger.info("Session token: #{session['token']}")
   header = { 'Authorization' => "bearer #{session['token']}" }
   request_path = '/api/subscribe'
   request_body = "action=sub&action_source=o&sr_name=#{subs}"
   response = reddit_oauth.post(request_path, request_body, header.merge(USER_AGENT))
+  logger.info("Response: #{response.body}")
   response.code.to_i
 end
 

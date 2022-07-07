@@ -11,7 +11,7 @@
         <div class="column">
           <h1>shiftit <span>v0.1.0</span></h1>
           <p>shiftit allows you to migrate your reddit subscriptions from one account to another.<br>make sure you are signed into the account you want to copy subscriptions <strong>from</strong>, and then click the link below to get started.</p>
-          <button onclick="window.location.href='https://www.reddit.com/api/v1/authorize?client_id=tVDY-xn8K6vWlnlKC5oJtg&response_type=code&state=<%= @state %>&redirect_uri=https://reddit-shiftit.herokuapp.com&duration=temporary&scope=mysubreddits,identity';">authorize this app</button>
+          <button onclick="window.location.href='https://www.reddit.com/api/v1/authorize?client_id=<%= @client_id %>&response_type=code&state=<%= @state %>&redirect_uri=<%= @redirect_uri %>&duration=temporary&scope=mysubreddits,identity';">authorize this app</button>
         </div>
       </div>
     </div>
